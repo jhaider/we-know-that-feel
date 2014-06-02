@@ -1,0 +1,5 @@
+C:\Users\User\Kinect\FYDP\KinectSimpleGesture\KinectSimpleGesture\bin\Debug\KinectSimpleGesture.exe
+C:\Users\User\Kinect\FYDP\KinectSimpleGesture\KinectSimpleGesture\bin\Debug\KinectSimpleGesture.pdb
+C:\Users\User\Kinect\FYDP\KinectSimpleGesture\KinectSimpleGesture\obj\Debug\KinectSimpleGesture.csprojResolveAssemblyReference.cache
+C:\Users\User\Kinect\FYDP\KinectSimpleGesture\KinectSimpleGesture\obj\Debug\KinectSimpleGesture.exe
+C:\Users\User\Kinect\FYDP\KinectSimpleGesture\KinectSimpleGesture\obj\Debug\KinectSimpleGesture.pdb
