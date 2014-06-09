@@ -17,13 +17,15 @@ namespace KinectSimpleGesture
         int _rightFrameCount = 0;
 
         string _direction;
+        string _hand;
 
         public event EventHandler GestureRecognized;
 
-        public WaveGesture()
+        public WaveGesture(ArmSegment.Arm side)
         {
-            RightOfElbowSegment rightElbowSegment = new RightOfElbowSegment();
-            LeftOfElbowSegment leftElbowSegment = new LeftOfElbowSegment();
+            RightOfElbowSegment rightElbowSegment = new RightOfElbowSegment(side);
+            LeftOfElbowSegment leftElbowSegment = new LeftOfElbowSegment(side);
+            _hand = (side == ArmSegment.Arm.Left) ? "Left" : "Right";
 
             _leftWaveSegments = new IGestureSegment[]
             {
@@ -117,7 +119,7 @@ namespace KinectSimpleGesture
 
         public string Direction
         {
-            get { return _direction;  }
+            get { return _direction + " on the " + _hand +  " hand";  }
         }
     }
 }

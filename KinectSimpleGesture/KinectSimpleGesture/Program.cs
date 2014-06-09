@@ -8,7 +8,7 @@ namespace KinectSimpleGesture
 {
     class Program
     {
-        static WaveGesture _gesture = new WaveGesture();
+        static WaveGesture _gesture = new WaveGesture(ArmSegment.Arm.Left);
 
         static void Main(string[] args)
         {

@@ -86,7 +86,8 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         /// </summary>
         private DrawingImage imageSource;
 
-        static WaveGesture _gesture = new WaveGesture();
+        static WaveGesture _rightHandWave = new WaveGesture(ArmSegment.Arm.Right);
+        static WaveGesture _leftHandWave = new WaveGesture(ArmSegment.Arm.Left);
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
@@ -183,7 +184,8 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                 // Start the sensor!
                 try
                 {
-                    _gesture.GestureRecognized += Gesture_GestureRecognized;
+                    _rightHandWave.GestureRecognized += Gesture_GestureRecognized;
+                    _leftHandWave.GestureRecognized += Gesture_GestureRecognized;
                     this.sensor.Start();
                 }
                 catch (IOException)
@@ -243,7 +245,8 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
                             this.DrawBonesAndJoints(skel, dc);
-                            _gesture.Update(skel);
+                            _rightHandWave.Update(skel);
+                            _leftHandWave.Update(skel);
                         }
                         else if (skel.TrackingState == SkeletonTrackingState.PositionOnly)
                         {
@@ -253,7 +256,8 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                             this.SkeletonPointToScreen(skel.Position),
                             BodyCenterThickness,
                             BodyCenterThickness);
-                            _gesture.Update(skel);
+                            _rightHandWave.Update(skel);
+                            _leftHandWave.Update(skel);
                         }
                     }
                 }
