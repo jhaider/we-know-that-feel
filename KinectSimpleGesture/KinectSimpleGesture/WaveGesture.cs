@@ -31,7 +31,6 @@ namespace KinectSimpleGesture
             {
                 rightElbowSegment,
                 leftElbowSegment,
-                //rightElbowSegment,
 
             };
 
@@ -39,8 +38,6 @@ namespace KinectSimpleGesture
             {
                 leftElbowSegment,
                 rightElbowSegment,
-                //leftElbowSegment,
-
             };
         }
 
@@ -50,13 +47,6 @@ namespace KinectSimpleGesture
         /// <param name="skeleton">The skeleton data.</param>
         public void Update(Skeleton skeleton)
         {
-            //detections.Push(DetectRightWave(skeleton));
-            //bool check2 = DetectLeftWave(skeleton);
-            //if (check1 || check2)
-            //{
-            //    Console.WriteLine("whoo hoo");
-            //}
-
             DetectLeftWave(skeleton);
             DetectRightWave(skeleton);
         }
@@ -107,14 +97,6 @@ namespace KinectSimpleGesture
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Resets the current gesture.
-        /// </summary>
-        public void Reset()
-        {
-          
         }
 
         public string Direction

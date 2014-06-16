@@ -99,9 +99,16 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
 
         static void Gesture_GestureRecognized(object sender, EventArgs e)
         {
-            WaveGesture waveGesture = (WaveGesture)sender;
-            Debug.WriteLine("You just waved ");
-            Debug.WriteLine(waveGesture.Direction);
+            if (sender == null)
+            {
+                Debug.WriteLine("Not waving");
+            }
+            else
+            {
+                WaveGesture waveGesture = (WaveGesture)sender;
+                Debug.WriteLine("You just waved ");
+                Debug.WriteLine(waveGesture.Direction);
+            }
         }
 
         /// <summary>
