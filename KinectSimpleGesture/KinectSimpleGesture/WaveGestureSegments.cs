@@ -44,7 +44,7 @@ namespace KinectSimpleGesture
 
         protected double GetWristToElbowAngle(float z, float y)
         {
-            return Math.Tan(y / z);
+            return (Math.Atan2(y, z) * 180) / Math.PI;
         }
 
         protected bool IsWristAboveElbowEnough(Skeleton skeleton)
