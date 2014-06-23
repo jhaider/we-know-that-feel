@@ -8,6 +8,9 @@ namespace KinectSimpleGesture
     {
         readonly int WINDOW_SIZE = 50;
 
+        public static readonly string DIRECTION_RIGHT = "right";
+        public static readonly string DIRECTION_LEFT = "left";
+
         IGestureSegment[] _leftWaveSegments;
         int _leftSegmentCount = 0;
         int _leftFrameCount = 0;
@@ -25,7 +28,7 @@ namespace KinectSimpleGesture
         {
             RightOfElbowSegment rightElbowSegment = new RightOfElbowSegment(side);
             LeftOfElbowSegment leftElbowSegment = new LeftOfElbowSegment(side);
-            _hand = (side == ArmSegment.Arm.Left) ? "Left" : "Right";
+            _hand = (side == ArmSegment.Arm.Left) ? DIRECTION_LEFT : DIRECTION_RIGHT;
 
             _leftWaveSegments = new IGestureSegment[]
             {
@@ -53,13 +56,13 @@ namespace KinectSimpleGesture
 
         public bool DetectLeftWave(Skeleton skeleton) 
         {
-            _direction = "left";
+            _direction = DIRECTION_LEFT;
             return DetectWave(_leftWaveSegments, skeleton, ref _leftSegmentCount, ref _leftFrameCount);
         }
 
         public bool DetectRightWave(Skeleton skeleton) 
         {
-            _direction = "right";
+            _direction = DIRECTION_RIGHT;
             return DetectWave(_rightWaveSegments, skeleton, ref _rightSegmentCount, ref _rightFrameCount);
         }
 
@@ -101,7 +104,8 @@ namespace KinectSimpleGesture
 
         public string Direction
         {
-            get { return _direction + " on the " + _hand +  " hand";  }
+            get { return _direction; }
         }
+
     }
 }

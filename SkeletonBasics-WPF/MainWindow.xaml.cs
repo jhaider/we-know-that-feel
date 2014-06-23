@@ -13,6 +13,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Timers;
     using System.Windows;
     using System.Windows.Media;
 
@@ -89,19 +90,42 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         static WaveGesture _rightHandWave = new WaveGesture(ArmSegment.Arm.Right);
         static WaveGesture _leftHandWave = new WaveGesture(ArmSegment.Arm.Left);
 
+        Timer LeftTimer = new System.Timers.Timer(2000);
+        Timer RightTimer = new System.Timers.Timer(2000);
+
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
-        public MainWindow()
-        {
+        public MainWindow() {
             InitializeComponent();
+            LeftTimer.AutoReset = false;
+            RightTimer.AutoReset = false;
+
+            LeftTimer.Elapsed += new ElapsedEventHandler(OnLeftTimedEvent);
+            RightTimer.Elapsed += new ElapsedEventHandler(OnRightTimedEvent);
         }
 
-        static void Gesture_GestureRecognized(object sender, EventArgs e)
-        {
+        public void LeftGesture_GestureRecognized(object sender, EventArgs e) {
             WaveGesture waveGesture = (WaveGesture)sender;
-            Debug.Write("You just waved ");
+            this.leftWaveCheck.Visibility = System.Windows.Visibility.Visible;
+            LeftTimer.Start();
             Debug.WriteLine(waveGesture.Direction);
+        }
+
+        public void RightGesture_GestureRecognized(object sender, EventArgs e) {
+            WaveGesture waveGesture = (WaveGesture)sender;
+            this.rightWaveCheck.Visibility = System.Windows.Visibility.Visible;
+            RightTimer.Start();
+            Debug.WriteLine(waveGesture.Direction);
+        }
+
+        private void OnLeftTimedEvent(object source, ElapsedEventArgs e) {
+            Dispatcher.BeginInvoke(new Action(() => { this.leftWaveCheck.Visibility = System.Windows.Visibility.Hidden; })); 
+            
+        }
+
+        private void OnRightTimedEvent(object source, ElapsedEventArgs e) {
+            Dispatcher.BeginInvoke(new Action(() => { this.rightWaveCheck.Visibility = System.Windows.Visibility.Hidden; })); 
         }
 
         /// <summary>
@@ -184,8 +208,8 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                 // Start the sensor!
                 try
                 {
-                    _rightHandWave.GestureRecognized += Gesture_GestureRecognized;
-                    _leftHandWave.GestureRecognized += Gesture_GestureRecognized;
+                    _rightHandWave.GestureRecognized += RightGesture_GestureRecognized;
+                    _leftHandWave.GestureRecognized += LeftGesture_GestureRecognized;
                     this.sensor.Start();
                 }
                 catch (IOException)
