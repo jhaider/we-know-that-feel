@@ -3,7 +3,7 @@ using Microsoft.Kinect;
 
 namespace KinectSimpleGesture
 {
-	public class GestureDetect
+	class GestureDetect
 	{
 		readonly int WINDOW_SIZE = 50;
 
@@ -52,9 +52,10 @@ namespace KinectSimpleGesture
 
 	}
 
-	public class GestureEventArgs : EventArgs {
+	class GestureEventArgs : EventArgs {
 		TrieNode m_gesture;
-		public GestureEventArgs (TrieNode gesture) {
+        public GestureEventArgs() {}
+        public GestureEventArgs (TrieNode gesture) {
 			m_gesture = gesture;
 		}
 	}
