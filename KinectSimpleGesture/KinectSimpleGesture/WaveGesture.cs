@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-namespace KinectSimpleGesture
+namespace KinectSimpleGesture 
 {
     public class WaveGesture
     {

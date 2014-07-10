@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GestureSegment.cs" />
+    <Compile Include="GestureTrie.cs" />
     <Compile Include="WaveGesture.cs" />
     <Compile Include="GesturePartResult.cs" />
     <Compile Include="Program.cs" />

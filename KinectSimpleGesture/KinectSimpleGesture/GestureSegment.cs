@@ -56,16 +56,10 @@ namespace KinectSimpleGesture {
 
     class GestureSegment {
 
-        GestureSegment m_next;
         Dictionary<JointType, JointData> m_joints;
 
-        public GestureSegment(GestureSegment nextSegment, Dictionary<JointType, JointData> joints) {
-            m_next = nextSegment;
+        public GestureSegment(Dictionary<JointType, JointData> joints) {
             m_joints = new Dictionary<JointType, JointData>(joints);
-        }
-
-        public GestureSegment NextGesture {
-            get { return m_next; }
         }
 
         public Dictionary<JointType, JointData> Joints {
