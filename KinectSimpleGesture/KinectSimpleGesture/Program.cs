@@ -8,7 +8,7 @@ namespace KinectSimpleGesture
 {
     class Program
     {
-        static WaveGesture _gesture = new WaveGesture(ArmSegment.Arm.Left);
+		static GestureDetect _gesture = new GestureDetect();
 
         static void Main(string[] args)
         {
@@ -56,9 +56,8 @@ namespace KinectSimpleGesture
 
         static void Gesture_GestureRecognized(object sender, EventArgs e)
         {
-            WaveGesture waveGesture = (WaveGesture)sender;
             Console.Write("You just waved ");
-            Console.WriteLine(waveGesture.Direction);
+			//   Console.WriteLine(waveGesture.Direction);
         }
     }
 }
