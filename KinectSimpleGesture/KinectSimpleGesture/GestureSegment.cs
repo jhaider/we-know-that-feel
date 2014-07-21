@@ -44,13 +44,46 @@ namespace KinectSimpleGesture {
             }
         }
 
+		public double PercentOverlap(Axis axis, double angle, double minRange, double maxRange) {
+			if (!InRange(axis, angle, minRange, maxRange)) {
+				return 0;
+			}
+				double maxAngle = angle + minRange;
+				double minAngle = angle - minRange;
+				double numLeft, numRight, denLeft, denRight;
+			// to find the intersection, choose the largest on the left and the smallest on the right.
+			// Denominator would be the sum of the segments
+			switch (axis) {
+				case Axis.x:
+					numLeft = m_angleX - m_Xmin <= minAngle ?  minAngle : m_angleX - m_Xmin;
+					numRight = maxAngle <= m_angleX + m_Xmax ?  maxAngle : m_angleX + m_Xmax;
+					denLeft = m_angleX - m_Xmin <= minAngle ? m_angleX - m_Xmin : minAngle;
+					denRight = maxAngle <= m_angleX + m_Xmax ? m_angleX + m_Xmax :  maxAngle;
+				case Axis.y:
+					numLeft = m_angleY - m_Ymin <= minAngle ?  minAngle : m_angleY - m_Ymin;
+					numRight = maxAngle <= m_angleY + m_Ymax ?  maxAngle : m_angleY + m_Ymax;
+					denLeft = m_angleY - m_Ymin <= minAngle ? m_angleY - m_Ymin : minAngle;
+					denRight = maxAngle <= m_angleY + m_Ymax ? m_angleY + m_Ymax :  maxAngle;
+				case Axis.z:
+					numLeft = m_angleZ - m_Zmin <= minAngle ?  minAngle : m_angleZ - m_Zmin;
+					numRight = maxAngle <= m_angleZ + m_Zmax ?  maxAngle : m_angleZ + m_Zmax;
+					denLeft = m_angleZ - m_Zmin <= minAngle ? m_angleZ - m_Zmin : minAngle;
+					denRight = maxAngle <= m_angleZ + m_Zmax ? m_angleZ + m_Zmax :  maxAngle;
+				default:
+					return 0;
+			}
+			return Math.Abs(((numRight - numLeft)/(denRight - denLeft)) * 100);
+		}
+
+		// May need to refine this.
+		// TODO: Return true if at least 50% overlap
         public bool Overlap(JointData data) {
             if (data.DaJoint != DaJoint) {
                 return false;
             }
-            return InRange(Axis.x, data.m_angleX, data.m_Xmin, data.m_Xmax) &&
-                    InRange(Axis.y, data.m_angleY, data.m_Ymin, data.m_Ymax) &&
-                    InRange(Axis.z, data.m_angleZ, data.m_Zmin, data.m_Zmax);
+			return (PercentOverlap(Axis.x, data.m_angleX, data.m_Xmin, data.m_Xmax) >= 50) &&
+				(PercentOverlap(Axis.y, data.m_angleY, data.m_Ymin, data.m_Ymax) >= 50) &&
+				(PercentOverlap(Axis.z, data.m_angleZ, data.m_Zmin, data.m_Zmax) >= 50);
         }
     }
 
@@ -83,8 +116,10 @@ namespace KinectSimpleGesture {
             // Check for each joint to see if they are in range
             foreach (KeyValuePair<JointType, JointData> entry in m_joints) {
                 // do something with entry.Value or entry.Key
-                JointData data;
-                if (!segment.m_joints.TryGetValue(entry.Key, out data) || !entry.Value.Overlap(data)) {
+				JointData data; // data is an output variable
+				segment.m_joints.TryGetValue (entry.Key, out data); 
+				// if joint type does not exist or if there is no overlap
+                if (!entry.Value.Overlap(data)) {
                     return false;
                 }
             }
