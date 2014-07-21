@@ -9,7 +9,8 @@ namespace KinectSimpleGesture {
         public enum Axis { x, y, z };
 
         JointType m_joint;
-        double m_angleX, m_angleY, m_angleZ;
+		double m_angleY, m_angleX;
+		double m_xDistance;
 
         const double DEFAULT_TOLERANCE = 10;
 
@@ -20,25 +21,24 @@ namespace KinectSimpleGesture {
             get { return m_joint; }
         }
 
-        public JointData(JointType joint, double xAngle, double yAngle, double zAngle) {
+		public JointData(JointType joint, double xAngle, double yAngle, double xDistance) {
             m_joint = joint;
-            m_angleX = xAngle;
-            m_angleY = yAngle;
-            m_angleZ = zAngle;
+			m_angleY = yAngle;
+			m_angleX = xAngle;
             m_Xmin = m_Ymin = m_Zmin = DEFAULT_TOLERANCE;
             m_Xmax = m_Ymax = m_Zmax = DEFAULT_TOLERANCE;
+			m_xDistance = xDistance;
         }
 
         public bool InRange(Axis axis, double angle, double minRange, double maxRange) {
             double maxAngle = angle + maxRange;
             double minAngle = angle - minRange;
+			// TODO: use xDistance somehow?
             switch (axis) {
                 case Axis.x:
                     return (m_angleX - m_Xmin <= maxAngle && minAngle <= m_angleX + m_Xmax);
                 case Axis.y:
                     return (m_angleY - m_Ymin <= maxAngle && minAngle <= m_angleY + m_Ymax);
-                case Axis.z:
-                    return (m_angleZ - m_Zmin <= maxAngle && minAngle <= m_angleZ + m_Zmax);
                 default:
                     return false;
             }
@@ -64,11 +64,6 @@ namespace KinectSimpleGesture {
 					numRight = maxAngle <= m_angleY + m_Ymax ?  maxAngle : m_angleY + m_Ymax;
 					denLeft = m_angleY - m_Ymin <= minAngle ? m_angleY - m_Ymin : minAngle;
 					denRight = maxAngle <= m_angleY + m_Ymax ? m_angleY + m_Ymax :  maxAngle;
-				case Axis.z:
-					numLeft = m_angleZ - m_Zmin <= minAngle ?  minAngle : m_angleZ - m_Zmin;
-					numRight = maxAngle <= m_angleZ + m_Zmax ?  maxAngle : m_angleZ + m_Zmax;
-					denLeft = m_angleZ - m_Zmin <= minAngle ? m_angleZ - m_Zmin : minAngle;
-					denRight = maxAngle <= m_angleZ + m_Zmax ? m_angleZ + m_Zmax :  maxAngle;
 				default:
 					return 0;
 			}
@@ -82,8 +77,7 @@ namespace KinectSimpleGesture {
                 return false;
             }
 			return (PercentOverlap(Axis.x, data.m_angleX, data.m_Xmin, data.m_Xmax) >= 50) &&
-				(PercentOverlap(Axis.y, data.m_angleY, data.m_Ymin, data.m_Ymax) >= 50) &&
-				(PercentOverlap(Axis.z, data.m_angleZ, data.m_Zmin, data.m_Zmax) >= 50);
+				(PercentOverlap(Axis.y, data.m_angleY, data.m_Ymin, data.m_Ymax) >= 50);
         }
     }
 
