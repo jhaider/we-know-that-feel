@@ -8,7 +8,7 @@ namespace KinectSimpleGesture
 {
     class Program
     {
-		static GestureDetect _gesture = new GestureDetect();
+		static GestureDetect _gesture = new GestureDetect(null);
 
         static void Main(string[] args)
         {

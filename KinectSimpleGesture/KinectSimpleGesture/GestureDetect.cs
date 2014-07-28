@@ -33,7 +33,7 @@ namespace KinectSimpleGesture
 		{
 			// Check the trie to see if the segment is found
 			// Null is returned if nothing is found
-			TrieNode result = currentNode.findChild(segment);
+			TrieNode result = m_currentNode.findChild(segment);
 			if (result != null) {
 				if (result.isTerminal) {
                     if (GestureRecognized != null) {
@@ -46,7 +46,7 @@ namespace KinectSimpleGesture
 					m_segmentCount++;
 					m_frameCount = 0;
 				}
-                currentNode = result;
+                m_currentNode = result;
 			} else if (m_frameCount == WINDOW_SIZE){
 				m_segmentCount = 0;
 				m_frameCount = 0;
