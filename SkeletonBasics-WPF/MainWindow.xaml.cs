@@ -87,7 +87,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         /// </summary>
         private DrawingImage imageSource;
 
-        GestureDetect gesture;
+        GestureDetect gesture = new GestureDetect();
 
         Timer LeftTimer = new System.Timers.Timer(2000);
         Timer RightTimer = new System.Timers.Timer(2000);
@@ -257,7 +257,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
                             this.DrawBonesAndJoints(skel, dc);
-                            gesture.Update(skel);
+                      //      
                         }
                         else if (skel.TrackingState == SkeletonTrackingState.PositionOnly)
                         {
@@ -267,13 +267,22 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                             this.SkeletonPointToScreen(skel.Position),
                             BodyCenterThickness,
                             BodyCenterThickness);
-                            gesture.Update(skel);
+              //              gesture.Update(skel);
                         }
+
                     }
                 }
 
                 // prevent drawing outside of our render area
                 this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, RenderWidth, RenderHeight));
+
+                if (skeletons.Length > 0) {
+                    var user = skeletons.Where(u => u.TrackingState == SkeletonTrackingState.Tracked).FirstOrDefault();
+                    if (user != null) {
+                        gesture.Update(user);
+                    }
+                }
+
 
             }
         }

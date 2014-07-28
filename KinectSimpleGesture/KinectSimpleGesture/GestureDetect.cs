@@ -14,8 +14,12 @@ namespace KinectSimpleGesture
 
 		public event EventHandler GestureRecognized;
 
-		public GestureDetect (TrieNode currentNode) {
-            m_currentNode = currentNode;
+		public GestureDetect () {
+            m_currentNode = new TrieNode();
+        }
+
+        public GestureDetect(TrieNode trieNode) {
+            m_currentNode = trieNode;
         }
 
 		/// <summary>
@@ -25,17 +29,23 @@ namespace KinectSimpleGesture
 		public void Update(Skeleton skeleton) {
 			// Create a gesture segment with the deltas compared to the axis
             // Get the difference from the current node to the generated gesture segment
+
+            Console.Write("Update");
+
             GestureSegment segment = GestureSegment.generateSegmentFromSkeleton(skeleton);
             Console.Write("Update here ");
 
-            DetectGesture(segment);
+         //   DetectGesture(segment);
 		}
 
 		public bool DetectGesture(GestureSegment segment)
 		{
+
+            Console.Write("RAWR");
 			// Check the trie to see if the segment is found
 			// Null is returned if nothing is found
 			TrieNode result = m_currentNode.findChild(segment);
+            Console.Write("boo");
 			if (result != null) {
 				if (result.isTerminal) {
                     if (GestureRecognized != null) {

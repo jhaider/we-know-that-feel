@@ -18,6 +18,7 @@ namespace KinectSimpleGesture
 		{
 			// This is necessary to instantiate the first trienode, when you don't have a Gesture Segment to add yet.
 			// It's basically the root node.
+            m_children = new Dictionary<GestureSegment, TrieNode>();
 		}
 		public TrieNode(GestureSegment s)
         {
