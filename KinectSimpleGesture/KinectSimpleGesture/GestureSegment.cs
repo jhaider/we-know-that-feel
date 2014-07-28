@@ -14,8 +14,8 @@ namespace KinectSimpleGesture {
 
         const double DEFAULT_TOLERANCE = 10;
 
-        double m_Xmin, m_Ymin, m_Zmin;
-        double m_Xmax, m_Ymax, m_Zmax;
+        double m_Xmin, m_Ymin;
+        double m_Xmax, m_Ymax;
 
         public JointType DaJoint {
             get { return m_joint; }
@@ -25,8 +25,8 @@ namespace KinectSimpleGesture {
             m_joint = joint;
 			m_angleY = yAngle;
 			m_angleX = xAngle;
-            m_Xmin = m_Ymin = m_Zmin = DEFAULT_TOLERANCE;
-            m_Xmax = m_Ymax = m_Zmax = DEFAULT_TOLERANCE;
+            m_Xmin = m_Ymin = DEFAULT_TOLERANCE;
+            m_Xmax = m_Ymax = DEFAULT_TOLERANCE;
 			m_xDistance = xDistance;
         }
 
