@@ -8,13 +8,15 @@ namespace KinectSimpleGesture
 	{
 		readonly int WINDOW_SIZE = 50;
 
-		TrieNode currentNode = null;
+		TrieNode m_currentNode = null;
 		int m_segmentCount = 0;
 		int m_frameCount = 0;
 
 		public event EventHandler GestureRecognized;
 
-		public GestureDetect () { }
+		public GestureDetect (TrieNode currentNode) {
+            m_currentNode = currentNode;
+        }
 
 		/// <summary>
 		/// Updates the current gesture.
