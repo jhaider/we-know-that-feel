@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 
 namespace KinectSimpleGesture {
-    class JointData {
+    public class JointData {
         public enum Axis { x, y, z };
 
         JointType m_joint;
@@ -59,11 +59,13 @@ namespace KinectSimpleGesture {
 					numRight = maxAngle <= m_angleX + m_Xmax ?  maxAngle : m_angleX + m_Xmax;
 					denLeft = m_angleX - m_Xmin <= minAngle ? m_angleX - m_Xmin : minAngle;
 					denRight = maxAngle <= m_angleX + m_Xmax ? m_angleX + m_Xmax :  maxAngle;
+                    break;
 				case Axis.y:
 					numLeft = m_angleY - m_Ymin <= minAngle ?  minAngle : m_angleY - m_Ymin;
 					numRight = maxAngle <= m_angleY + m_Ymax ?  maxAngle : m_angleY + m_Ymax;
 					denLeft = m_angleY - m_Ymin <= minAngle ? m_angleY - m_Ymin : minAngle;
 					denRight = maxAngle <= m_angleY + m_Ymax ? m_angleY + m_Ymax :  maxAngle;
+                    break;
 				default:
 					return 0;
 			}
@@ -81,7 +83,7 @@ namespace KinectSimpleGesture {
         }
     }
 
-    class GestureSegment {
+    public class GestureSegment {
 
         Dictionary<JointType, JointData> m_joints;
 
@@ -96,6 +98,9 @@ namespace KinectSimpleGesture {
 
         public static GestureSegment generateSegmentFromSkeleton(Skeleton skeleton) {
             Dictionary<JointType, JointData> dictionary = new Dictionary<JointType,JointData>();
+
+            Console.Write("Gesture Segment: ");
+
             foreach (JointType joint in (JointType[])Enum.GetValues(typeof(JointType))) {
                 // Calculate the value and add into dictionary
                 float x = skeleton.Joints[joint].Position.X;
@@ -107,6 +112,8 @@ namespace KinectSimpleGesture {
 
                 JointData data = new JointData(joint, x_angle, y_angle, x);
                 dictionary.Add(joint, data);
+
+                Console.Write(joint + " " + x_angle + " " + y_angle);
             }
             return new GestureSegment(dictionary);
         }

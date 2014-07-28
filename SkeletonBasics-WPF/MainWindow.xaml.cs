@@ -87,8 +87,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         /// </summary>
         private DrawingImage imageSource;
 
-        static WaveGesture _rightHandWave = new WaveGesture(ArmSegment.Arm.Right);
-        static WaveGesture _leftHandWave = new WaveGesture(ArmSegment.Arm.Left);
+        GestureDetect gesture;
 
         Timer LeftTimer = new System.Timers.Timer(2000);
         Timer RightTimer = new System.Timers.Timer(2000);
@@ -105,18 +104,10 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
             RightTimer.Elapsed += new ElapsedEventHandler(OnRightTimedEvent);
         }
 
-        public void LeftGesture_GestureRecognized(object sender, EventArgs e) {
-            WaveGesture waveGesture = (WaveGesture)sender;
-            this.leftWaveCheck.Visibility = System.Windows.Visibility.Visible;
-            LeftTimer.Start();
-            Debug.WriteLine(waveGesture.Direction);
-        }
-
-        public void RightGesture_GestureRecognized(object sender, EventArgs e) {
-            WaveGesture waveGesture = (WaveGesture)sender;
-            this.rightWaveCheck.Visibility = System.Windows.Visibility.Visible;
-            RightTimer.Start();
-            Debug.WriteLine(waveGesture.Direction);
+        public void GestureRecognized(object sender, EventArgs e) {
+            //GestureDetect waveGesture = (GestureDetect)sender;
+            //this.leftWaveCheck.Visibility = System.Windows.Visibility.Visible;
+            //LeftTimer.Start();
         }
 
         private void OnLeftTimedEvent(object source, ElapsedEventArgs e) {
@@ -206,14 +197,11 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                 this.sensor.SkeletonFrameReady += this.SensorSkeletonFrameReady;
 
                 // Start the sensor!
-                try
-                {
-                    _rightHandWave.GestureRecognized += RightGesture_GestureRecognized;
-                    _leftHandWave.GestureRecognized += LeftGesture_GestureRecognized;
+                try {
+                    gesture.GestureRecognized += GestureRecognized;
                     this.sensor.Start();
                 }
-                catch (IOException)
-                {
+                catch (IOException) {
                     this.sensor = null;
                 }
             }
@@ -269,8 +257,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
                             this.DrawBonesAndJoints(skel, dc);
-                            _rightHandWave.Update(skel);
-                            _leftHandWave.Update(skel);
+                            gesture.Update(skel);
                         }
                         else if (skel.TrackingState == SkeletonTrackingState.PositionOnly)
                         {
@@ -280,8 +267,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                             this.SkeletonPointToScreen(skel.Position),
                             BodyCenterThickness,
                             BodyCenterThickness);
-                            _rightHandWave.Update(skel);
-                            _leftHandWave.Update(skel);
+                            gesture.Update(skel);
                         }
                     }
                 }

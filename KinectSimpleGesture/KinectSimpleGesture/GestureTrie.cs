@@ -8,7 +8,7 @@ using Microsoft.Kinect;
 namespace KinectSimpleGesture
 {
 
-    class TrieNode
+    public class TrieNode
     {
         GestureSegment m_segment;
         Dictionary<GestureSegment, TrieNode> m_children;

@@ -4,7 +4,7 @@ using KinectSimpleGesture;
 
 namespace KinectSimpleGesture
 {
-	class GestureDetect
+	public class GestureDetect
 	{
 		readonly int WINDOW_SIZE = 50;
 
@@ -26,6 +26,8 @@ namespace KinectSimpleGesture
 			// Create a gesture segment with the deltas compared to the axis
             // Get the difference from the current node to the generated gesture segment
             GestureSegment segment = GestureSegment.generateSegmentFromSkeleton(skeleton);
+            Console.Write("Update here ");
+
             DetectGesture(segment);
 		}
 
