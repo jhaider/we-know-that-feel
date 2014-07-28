@@ -93,6 +93,25 @@ namespace KinectSimpleGesture {
             get { return m_joints; }
         }
 
+
+        public static GestureSegment generateSegmentFromSkeleton(Skeleton skeleton) {
+            Dictionary<JointType, JointData> dictionary = new Dictionary<JointType,JointData>();
+            foreach (JointType joint in (JointType[])Enum.GetValues(typeof(JointType))) {
+                // Calculate the value and add into dictionary
+                float x = skeleton.Joints[joint].Position.X;
+                float y = skeleton.Joints[joint].Position.Y;
+                float z = skeleton.Joints[joint].Position.Z;
+
+                double x_angle = (Math.Atan(x / z) * 180) / Math.PI;
+                double y_angle = (Math.Atan(y / x) * 180) / Math.PI;
+
+                JointData data = new JointData(joint, x_angle, y_angle, x);
+                dictionary.Add(joint, data);
+            }
+            return new GestureSegment(dictionary);
+        }
+
+
         // TODO possibility that the range will overlap!!!!!!
         // Have a method that calculates how close you are to the gesture
 

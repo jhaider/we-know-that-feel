@@ -71,31 +71,23 @@ namespace KinectSimpleGesture
             
             GesturePartResult result = segments[segmentCount].Update(skeleton);
 
-            if (result == GesturePartResult.Succeeded)
-            {
-                if (segmentCount + 1 < segments.Length)
-                {
+            if (result == GesturePartResult.Succeeded) {
+                if (segmentCount + 1 < segments.Length) {
                     segmentCount++;
                     frameCount = 0;
                 }
-                else
-                {
-                    if (GestureRecognized != null)
-                    {
+                else {
+                    if (GestureRecognized != null) {
                         GestureRecognized(this, new EventArgs());
                         segmentCount = 0;
                         frameCount = 0;
                         return true;
                     }
                 }
-            }
-            else if (result == GesturePartResult.Failed || frameCount == WINDOW_SIZE)
-            {
+            } else if (result == GesturePartResult.Failed || frameCount == WINDOW_SIZE) {
                 segmentCount = 0;
                 frameCount = 0;
-            }
-            else
-            {
+            } else {
                 frameCount++;
             }
 

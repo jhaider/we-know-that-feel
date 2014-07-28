@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Kinect;
+using KinectSimpleGesture;
 
 namespace KinectSimpleGesture
 {
@@ -9,7 +10,7 @@ namespace KinectSimpleGesture
 
 		TrieNode currentNode = null;
 		int m_segmentCount = 0;
-		int m_FrameCount = 0;
+		int m_frameCount = 0;
 
 		public event EventHandler GestureRecognized;
 
@@ -19,31 +20,36 @@ namespace KinectSimpleGesture
 		/// Updates the current gesture.
 		/// </summary>
 		/// <param name="skeleton">The skeleton data.</param>
-		public void Update(Skeleton skeleton)
-		{
-			// Create a gesture segment and generate it
+		public void Update(Skeleton skeleton) {
+			// Create a gesture segment with the deltas compared to the axis
+            // Get the difference from the current node to the generated gesture segment
+            GestureSegment segment = GestureSegment.generateSegmentFromSkeleton(skeleton);
+            DetectGesture(segment);
 		}
 
-		public bool DetectGesture(GestureSegment segment, ref int segmentCount, ref int frameCount)
+		public bool DetectGesture(GestureSegment segment)
 		{
 			// Check the trie to see if the segment is found
 			// Null is returned if nothing is found
 			TrieNode result = currentNode.findChild(segment);
 			if (result != null) {
 				if (result.isTerminal) {
-					GestureRecognized(this, new GestureEventArgs());
-					segmentCount = 0;
-					frameCount = 0;
+                    if (GestureRecognized != null) {
+                        GestureRecognized(this, new GestureEventArgs());
+                    }
+					m_segmentCount = 0;
+					m_frameCount = 0;
 					return true;
-				} else if (GestureRecognized != null) {
-					segmentCount++;
-					frameCount = 0;
+				} else {
+					m_segmentCount++;
+					m_frameCount = 0;
 				}
-			} else if (frameCount == WINDOW_SIZE){
-				segmentCount = 0;
-				frameCount = 0;
+                currentNode = result;
+			} else if (m_frameCount == WINDOW_SIZE){
+				m_segmentCount = 0;
+				m_frameCount = 0;
 			} else {
-				frameCount++;
+				m_frameCount++;
 			}
 
 			return false;
