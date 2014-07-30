@@ -102,6 +102,9 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
 
             LeftTimer.Elapsed += new ElapsedEventHandler(OnLeftTimedEvent);
             RightTimer.Elapsed += new ElapsedEventHandler(OnRightTimedEvent);
+
+            Console.WriteLine("shoudl expects omething");
+            gesture.TestGestureDetect();
         }
 
         public void GestureRecognized(object sender, EventArgs e) {

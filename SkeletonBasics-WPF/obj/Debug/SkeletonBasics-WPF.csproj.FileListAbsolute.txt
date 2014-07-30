@@ -54,3 +54,17 @@ C:\Users\Some Guest\we-know-that-feel\SkeletonBasics-WPF\obj\Debug\SkeletonBasic
 C:\Users\Some Guest\we-know-that-feel\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.g.resources
 C:\Users\Some Guest\we-know-that-feel\SkeletonBasics-WPF\obj\Debug\Microsoft.Samples.Kinect.SkeletonBasics.Properties.Resources.resources
 C:\Users\Some Guest\we-know-that-feel\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.csproj.GenerateResource.Cache
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.exe
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.pdb
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\SkeletonBasics-WPF\bin\Debug\SkeletonBasics-WPF.exe
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\SkeletonBasics-WPF\bin\Debug\SkeletonBasics-WPF.pdb
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\SkeletonBasics-WPF\bin\Debug\KinectSimpleGesture.exe
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\SkeletonBasics-WPF\bin\Debug\KinectSimpleGesture.pdb
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.csprojResolveAssemblyReference.cache
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\SkeletonBasics-WPF\obj\Debug\MainWindow.baml
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\SkeletonBasics-WPF\obj\Debug\MainWindow.g.cs
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\SkeletonBasics-WPF\obj\Debug\App.g.cs
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF_MarkupCompile.cache
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.g.resources
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\SkeletonBasics-WPF\obj\Debug\Microsoft.Samples.Kinect.SkeletonBasics.Properties.Resources.resources
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.csproj.GenerateResource.Cache

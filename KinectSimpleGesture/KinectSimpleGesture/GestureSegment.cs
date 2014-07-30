@@ -25,14 +25,18 @@ namespace KinectSimpleGesture {
             m_joint = joint;
 			m_angleY = yAngle;
 			m_angleX = xAngle;
-            m_Xmin = m_Ymin = DEFAULT_TOLERANCE;
-            m_Xmax = m_Ymax = DEFAULT_TOLERANCE;
+            m_Xmax = m_Xmin = m_Ymax = m_Ymin = DEFAULT_TOLERANCE;
+            //m_Xmin = xAngle - DEFAULT_TOLERANCE;
+            //m_Xmax = xAngle + DEFAULT_TOLERANCE;
+            //m_Ymin = yAngle - DEFAULT_TOLERANCE;
+            //m_Ymax = yAngle + DEFAULT_TOLERANCE;
 			m_xDistance = xDistance;
         }
 
         public bool InRange(Axis axis, double angle, double minRange, double maxRange) {
-            double maxAngle = angle + maxRange;
-            double minAngle = angle - minRange;
+            int tolerance = 10;
+            double maxAngle = Math.Abs(angle + tolerance) * ((angle < 0) ? -1 : 1);
+            double minAngle = Math.Abs(angle - tolerance) * ((angle < 0)? -1 : 1);
 			// TODO: use xDistance somehow?
             switch (axis) {
                 case Axis.x:
@@ -48,8 +52,9 @@ namespace KinectSimpleGesture {
 			if (!InRange(axis, angle, minRange, maxRange)) {
 				return 0;
 			}
-				double maxAngle = angle + minRange;
-				double minAngle = angle - minRange;
+                int tolerance = 15;
+				double maxAngle = angle + tolerance;
+				double minAngle = angle - tolerance;
 				double numLeft, numRight, denLeft, denRight;
 			// to find the intersection, choose the largest on the left and the smallest on the right.
 			// Denominator would be the sum of the segments

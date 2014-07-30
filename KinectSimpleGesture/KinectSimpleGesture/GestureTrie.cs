@@ -7,6 +7,18 @@ using Microsoft.Kinect;
 
 namespace KinectSimpleGesture
 {
+    public class TrieEqualityComparer : IEqualityComparer<GestureSegment>
+    {
+        public bool Equals(GestureSegment x, GestureSegment y)
+        {
+            return x.Match(y);
+        }
+
+        public int GetHashCode(GestureSegment obj)
+        {
+            return 0;// obj.GetHashCode(); 
+        }
+    }
 
     public class TrieNode
     {
@@ -18,12 +30,13 @@ namespace KinectSimpleGesture
 		{
 			// This is necessary to instantiate the first trienode, when you don't have a Gesture Segment to add yet.
 			// It's basically the root node.
-            m_children = new Dictionary<GestureSegment, TrieNode>();
+            m_children = new Dictionary<GestureSegment, TrieNode>(new TrieEqualityComparer());
+            //m_name = "Gesture";
 		}
 		public TrieNode(GestureSegment s)
         {
             m_segment = s;
-            m_children = new Dictionary<GestureSegment,TrieNode>();
+            m_children = new Dictionary<GestureSegment,TrieNode>(new TrieEqualityComparer());
         }
         public bool isTerminal { get; set; } // if isTerminal, the entire gesture so far is a match
 
@@ -82,6 +95,7 @@ namespace KinectSimpleGesture
             }
             root.isTerminal = true;
             root.m_name = name;
+            
         }
 
     }

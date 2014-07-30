@@ -18,3 +18,8 @@ C:\Users\Some Guest\we-know-that-feel\KinectSimpleGesture\KinectSimpleGesture\ob
 C:\Users\Some Guest\we-know-that-feel\KinectSimpleGesture\KinectSimpleGesture\obj\Debug\KinectSimpleGesture.pdb
 C:\Users\Some Guest\we-know-that-feel\KinectSimpleGesture\KinectSimpleGesture\bin\Debug\KinectSimpleGesture.exe
 C:\Users\Some Guest\we-know-that-feel\KinectSimpleGesture\KinectSimpleGesture\bin\Debug\KinectSimpleGesture.pdb
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\KinectSimpleGesture\KinectSimpleGesture\bin\Debug\KinectSimpleGesture.exe
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\KinectSimpleGesture\KinectSimpleGesture\bin\Debug\KinectSimpleGesture.pdb
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\KinectSimpleGesture\KinectSimpleGesture\obj\Debug\KinectSimpleGesture.csprojResolveAssemblyReference.cache
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\KinectSimpleGesture\KinectSimpleGesture\obj\Debug\KinectSimpleGesture.exe
+C:\Users\User\Kinect\FYDP\fresh\we-know-that-feel\KinectSimpleGesture\KinectSimpleGesture\obj\Debug\KinectSimpleGesture.pdb
