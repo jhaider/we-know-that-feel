@@ -115,7 +115,8 @@ namespace KinectSimpleGesture {
         public static GestureSegment generateSegmentFromSkeleton(Skeleton skeleton) {
             Dictionary<JointType, JointData> dictionary = new Dictionary<JointType,JointData>();
 
-            Console.WriteLine("Gesture Segment: ");
+            //Console.WriteLine("GestureSegment segment = new GestureSegment(dict1)");
+            //Console.WriteLine("segments.Add(segment)"); ;
 
             foreach (JointType joint in jointArray) {
 
@@ -130,9 +131,14 @@ namespace KinectSimpleGesture {
                 JointData data = new JointData(joint, x_angle, y_angle, x);
                 dictionary.Add(joint, data);
 
-                Console.WriteLine(joint + " " + x_angle + " " + y_angle);
+                //Console.WriteLine(joint + " " + x_angle + " " + y_angle);
+
+                //Console.WriteLine("data = new JointData(JointType."+joint+", " + x_angle + ", " + y_angle + ", 10);");
+                //Console.WriteLine("dict1.Add(JointType." + joint + ", data);");
             }
-            return null;
+
+            return new GestureSegment(dictionary);
+            //return null;
         }
 
 

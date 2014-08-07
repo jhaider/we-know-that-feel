@@ -26,6 +26,10 @@ namespace KinectSimpleGesture
         Dictionary<GestureSegment, TrieNode> m_children;
         string m_name;
 
+        public string getName() {
+            return m_name;
+        }
+
 		public TrieNode()
 		{
 			// This is necessary to instantiate the first trienode, when you don't have a Gesture Segment to add yet.
@@ -82,9 +86,16 @@ namespace KinectSimpleGesture
 
         public void addSegments(List<GestureSegment> segments, string name)
         {
+            if (segments.Count < 1)
+                return;
+
             TrieNode root = this;
             for (int i = 0; i < segments.Count; i++)
             {
+                if (root == null)
+                {
+                    Console.Write("stuff");
+                }
                 TrieNode next = root.findChild(segments[i]);
                 if (next == null)
                 {

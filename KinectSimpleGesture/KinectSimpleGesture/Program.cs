@@ -47,7 +47,7 @@ namespace KinectSimpleGesture
 
                         if (user != null)
                         {
-                            _gesture.Update(user);
+                            //_gesture.Update(user);
                         }
                     }               
                 }

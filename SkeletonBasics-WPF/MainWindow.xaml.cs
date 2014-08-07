@@ -6,16 +6,22 @@
 
 namespace Microsoft.Samples.Kinect.SkeletonBasics
 {
+    using System;
     using KinectSimpleGesture;
     using Microsoft.Kinect;
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Timers;
     using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Forms;
     using System.Windows.Media;
+    using Button = System.Windows.Forms.Button;
+    using TextBox = System.Windows.Forms.TextBox;
+    using Console = System.Console;
+    using Point = System.Windows.Point;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -89,19 +95,18 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
 
         GestureDetect gesture = new GestureDetect();
 
-        Timer LeftTimer = new System.Timers.Timer(2000);
-        Timer RightTimer = new System.Timers.Timer(2000);
+
+        private int frameCount = 0;
+        Mode m_mode = Mode.IDLE; 
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
         public MainWindow() {
             InitializeComponent();
-            LeftTimer.AutoReset = false;
-            RightTimer.AutoReset = false;
-
-            LeftTimer.Elapsed += new ElapsedEventHandler(OnLeftTimedEvent);
-            RightTimer.Elapsed += new ElapsedEventHandler(OnRightTimedEvent);
+           
+            RecordingBlock.Text = "";
+            DetectingBlock.Text = "";
 
             Console.WriteLine("shoudl expects omething");
             gesture.TestGestureDetect();
@@ -114,12 +119,12 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         }
 
         private void OnLeftTimedEvent(object source, ElapsedEventArgs e) {
-            Dispatcher.BeginInvoke(new Action(() => { this.leftWaveCheck.Visibility = System.Windows.Visibility.Hidden; })); 
+            //Dispatcher.BeginInvoke(new Action(() => { this.leftWaveCheck.Visibility = System.Windows.Visibility.Hidden; })); 
             
         }
 
         private void OnRightTimedEvent(object source, ElapsedEventArgs e) {
-            Dispatcher.BeginInvoke(new Action(() => { this.rightWaveCheck.Visibility = System.Windows.Visibility.Hidden; })); 
+            //Dispatcher.BeginInvoke(new Action(() => { this.rightWaveCheck.Visibility = System.Windows.Visibility.Hidden; })); 
         }
 
         /// <summary>
@@ -270,7 +275,16 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                             this.SkeletonPointToScreen(skel.Position),
                             BodyCenterThickness,
                             BodyCenterThickness);
-              //              gesture.Update(skel);
+                            frameCount++;
+
+                            if (frameCount % 10 == 0)
+                            {
+                                Console.Write("trying to generate from skeleton spot");
+                                gesture.Update(skel, m_mode);
+                                frameCount = 0;
+                                DetectedGestureBlock.Text = gesture.GetGestureName();
+                            } 
+                                
                         }
 
                     }
@@ -282,7 +296,15 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                 if (skeletons.Length > 0) {
                     var user = skeletons.Where(u => u.TrackingState == SkeletonTrackingState.Tracked).FirstOrDefault();
                     if (user != null) {
-                        gesture.Update(user);
+                        frameCount++;   
+
+                        if (frameCount % 15 == 0)
+                        {
+                            Console.WriteLine("trying to generate from here: " + Enum.GetName(typeof(Mode),m_mode));
+                            gesture.Update(user, m_mode);
+                            frameCount = 0;
+                            DetectedGestureBlock.Text = gesture.GetGestureName();
+                        } 
                     }
                 }
 
@@ -413,6 +435,57 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                 {
                     this.sensor.SkeletonStream.TrackingMode = SkeletonTrackingMode.Default;
                 }
+            }
+        }
+
+        private void RecordButton_Click(object sender, RoutedEventArgs e)
+        {
+            switch(m_mode) {
+                case Mode.IDLE:
+                    m_mode = Mode.RECORD;
+                    DetectButton.IsEnabled = false;
+                    DetectingBlock.Text = "";
+                    RecordingBlock.Text = "Recording ...";
+                    break;
+                case Mode.RECORD:
+                    m_mode = Mode.IDLE;
+                    string gestureName = "";
+                    gestureName = Microsoft.VisualBasic.Interaction.InputBox("Enter name for gesture", "Gesture Name", "SE490 Rocks", -1, -1);
+                    Console.WriteLine("recorded: " + gestureName);
+                    gesture.StopRecording(gestureName);                   
+                    DetectButton.IsEnabled = true;
+                    RecordingBlock.Text = "";
+                    break;
+                case Mode.DETECT:
+                    Console.WriteLine("should not happen: detect in record");
+                    break;
+                default:
+                    Console.WriteLine("Whaaaaa: Record");
+                    break;
+            }
+        }
+
+        private void DetectButton_Click(object sender, RoutedEventArgs e)
+        {
+            switch (m_mode)
+            {
+                case Mode.IDLE:
+                    m_mode = Mode.DETECT;
+                    RecordButton.IsEnabled = false;
+                    DetectingBlock.Text = "Detecting ...";
+                    break;
+                case Mode.DETECT:
+                    m_mode = Mode.IDLE;
+                    gesture.StopDetecting();
+                    RecordButton.IsEnabled = true;
+                    DetectingBlock.Text = "";
+                    break;
+                case Mode.RECORD:
+                    Console.WriteLine("should not happen: record in detect");
+                    break;
+                default:
+                    Console.WriteLine("Whaaaaa: Detect");
+                    break;
             }
         }
     }
