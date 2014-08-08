@@ -99,6 +99,14 @@ namespace KinectSimpleGesture {
             JointType.ShoulderRight,
             JointType.WristLeft,
             JointType.WristRight
+           /* JointType.KneeLeft,
+            JointType.KneeRight,
+            JointType.AnkleLeft,
+            JointType.AnkleRight,
+            JointType.HipLeft,
+            JointType.HipRight,
+            JointType.FootLeft,
+            JointType.FootRight*/
         };
 
         Dictionary<JointType, JointData> m_joints;

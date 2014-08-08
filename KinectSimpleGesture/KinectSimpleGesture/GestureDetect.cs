@@ -491,8 +491,10 @@ namespace KinectSimpleGesture
 
         public void StopRecording(string gestureName)
         {
+            Console.WriteLine("children b:" + m_currentNode.m_children.Count);
            if (gestureName.Length > 0)
                 m_currentNode.addSegments(recordedSegments, gestureName);
+           Console.WriteLine("children a:" + m_currentNode.m_children.Count);
 
             Reset();
         }
@@ -521,7 +523,7 @@ namespace KinectSimpleGesture
 					m_frameCount = 0;
 					return true;
 				} else {
-                    Console.WriteLine("Matched a segment!");
+                    Console.WriteLine("Matched a segment!" + result.id);
 					m_segmentCount++;
 					m_frameCount = 0;
 				}

@@ -109,7 +109,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
             DetectingBlock.Text = "";
 
             Console.WriteLine("shoudl expects omething");
-            gesture.TestGestureDetect();
+            //gesture.TestGestureDetect();
         }
 
         public void GestureRecognized(object sender, EventArgs e) {
@@ -200,6 +200,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
             {
                 // Turn on the skeleton stream to receive skeleton frames
                 this.sensor.SkeletonStream.Enable();
+                this.sensor.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
 
                 // Add an event handler to be called whenever there is new color frame data
                 this.sensor.SkeletonFrameReady += this.SensorSkeletonFrameReady;
@@ -446,6 +447,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                     DetectButton.IsEnabled = false;
                     DetectingBlock.Text = "";
                     RecordingBlock.Text = "Recording ...";
+                    RecordButton.Content = "Stop";
                     break;
                 case Mode.RECORD:
                     m_mode = Mode.IDLE;
@@ -455,6 +457,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                     gesture.StopRecording(gestureName);                   
                     DetectButton.IsEnabled = true;
                     RecordingBlock.Text = "";
+                    RecordButton.Content = "Record";
                     break;
                 case Mode.DETECT:
                     Console.WriteLine("should not happen: detect in record");
@@ -473,12 +476,14 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                     m_mode = Mode.DETECT;
                     RecordButton.IsEnabled = false;
                     DetectingBlock.Text = "Detecting ...";
+                    DetectButton.Content = "Stop";
                     break;
                 case Mode.DETECT:
                     m_mode = Mode.IDLE;
                     gesture.StopDetecting();
                     RecordButton.IsEnabled = true;
                     DetectingBlock.Text = "";
+                    DetectButton.Content = "Detect";
                     break;
                 case Mode.RECORD:
                     Console.WriteLine("should not happen: record in detect");

@@ -7,6 +7,7 @@ using Microsoft.Kinect;
 
 namespace KinectSimpleGesture
 {
+
     public class TrieEqualityComparer : IEqualityComparer<GestureSegment>
     {
         public bool Equals(GestureSegment x, GestureSegment y)
@@ -23,8 +24,10 @@ namespace KinectSimpleGesture
     public class TrieNode
     {
         GestureSegment m_segment;
-        Dictionary<GestureSegment, TrieNode> m_children;
+        public Dictionary<GestureSegment, TrieNode> m_children;
         string m_name;
+        public int id;
+        static int trieCounter = 0;
 
         public string getName() {
             return m_name;
@@ -35,12 +38,16 @@ namespace KinectSimpleGesture
 			// This is necessary to instantiate the first trienode, when you don't have a Gesture Segment to add yet.
 			// It's basically the root node.
             m_children = new Dictionary<GestureSegment, TrieNode>(new TrieEqualityComparer());
+            id = trieCounter;
+            trieCounter++;
             //m_name = "Gesture";
 		}
 		public TrieNode(GestureSegment s)
         {
             m_segment = s;
             m_children = new Dictionary<GestureSegment,TrieNode>(new TrieEqualityComparer());
+            id = trieCounter;
+            trieCounter++;
         }
         public bool isTerminal { get; set; } // if isTerminal, the entire gesture so far is a match
 
@@ -99,14 +106,14 @@ namespace KinectSimpleGesture
                 TrieNode next = root.findChild(segments[i]);
                 if (next == null)
                 {
-                    root.addChild(segments[i]);
-                    next = root.findChild(segments[i]);
+                    next = root.addChild(segments[i]);
+                    Console.WriteLine("added trie " + next.id + " " + name + " to " + root.id);
                 }
                 root = next;
             }
             root.isTerminal = true;
             root.m_name = name;
-            
+           
         }
 
     }
