@@ -27,6 +27,11 @@ namespace KinectSimpleGesture {
             get { return m_joint; }
         }
 
+        public void print()
+        {
+            Console.WriteLine("data = new JointData(JointType."+m_joint+", " + m_angleX + ", " + m_angleY + ", 10);");
+        }
+
 		public JointData(JointType joint, double xAngle, double yAngle, double xDistance) {
             m_joint = joint;
 			m_angleY = yAngle;

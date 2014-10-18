@@ -96,6 +96,14 @@ namespace KinectSimpleGesture
             if (segments.Count < 1)
                 return;
 
+            foreach (GestureSegment segment in segments)
+            {
+                foreach (JointData data in segment.Joints.Values)
+                {
+                    data.print();
+                }
+            }
+
             TrieNode root = this;
             for (int i = 0; i < segments.Count; i++)
             {
