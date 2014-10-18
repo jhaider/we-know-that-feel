@@ -503,6 +503,39 @@ namespace KinectSimpleGesture
 
         private void aggregateSegments(String gestureName)
         {
+            int aggregateTolerance = 30;
+
+            int xDirection = 0;
+            int yDirection = 0;
+            GestureSegment currentSegment = null;
+
+            List<GestureSegment> aggregatedSegments = new List<GestureSegment>();
+
+            // Parse through each segment in the recorded segments
+            foreach (GestureSegment segment in recordedSegments) {
+                if (currentSegment == null) {
+                    aggregatedSegments.Add(segment);
+                    currentSegment = segment;
+                    continue;
+                }
+
+                // Check for each joint to see if they are in range
+                foreach (KeyValuePair<JointType, JointData> joint in segment.Joints) {
+				    JointData data, prevData;
+                    currentSegment.Joints.TryGetValue(joint.Key, out data)
+                    if (segment.Joints.TryGetValue(joint.Key, out data)) {
+                        int xDelta = data.;
+                        int yDelta = 0;
+
+                    }
+
+                }
+
+            }
+
+            // Calculate the difference between each angle, if the the angles are heading the same direction AND in the current group range, then discard
+            // Else add it to aggregateSegments
+            
 
             m_currentNode.addSegments(recordedSegments, gestureName);
 
