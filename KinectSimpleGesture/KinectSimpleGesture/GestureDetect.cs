@@ -494,7 +494,7 @@ namespace KinectSimpleGesture
             Console.WriteLine("children b:" + m_currentNode.m_children.Count);
             if (gestureName.Length > 0)
             {
-                aggregateSegments(gestureName);
+                aggregateBlockSegments(gestureName);
             }
            Console.WriteLine("children a:" + m_currentNode.m_children.Count);
 
@@ -521,12 +521,25 @@ namespace KinectSimpleGesture
 
                 // Check for each joint to see if they are in range
                 foreach (KeyValuePair<JointType, JointData> joint in segment.Joints) {
-				    JointData data, prevData;
-                    currentSegment.Joints.TryGetValue(joint.Key, out data)
-                    if (segment.Joints.TryGetValue(joint.Key, out data)) {
-                        int xDelta = data.;
-                        int yDelta = 0;
+				    JointData data;
+                    if (currentSegment.Joints.TryGetValue(joint.Key, out data)) {
+                        int xDir = data.calculateDirection(joint.Value, JointData.Axis.x);
+                        int yDir = data.calculateDirection(joint.Value, JointData.Axis.y);
 
+                        if (xDirection == 0) {
+                            xDirection = xDir;
+                        }
+
+                        if (yDirection == 0) {
+                            yDirection = yDir;
+                        }
+
+                        if (!data.InAggregate(joint.Value) || xDir != xDirection || yDir != yDirection) {
+                            aggregatedSegments.Add(segment);
+                            currentSegment = segment;
+                            xDirection = xDir;
+                            yDirection = yDir;
+                        }
                     }
 
                 }
@@ -535,17 +548,31 @@ namespace KinectSimpleGesture
 
             // Calculate the difference between each angle, if the the angles are heading the same direction AND in the current group range, then discard
             // Else add it to aggregateSegments
-            
-
-            m_currentNode.addSegments(recordedSegments, gestureName);
+           
+            m_currentNode.addSegments(aggregatedSegments, gestureName);
 
         }
 
         private void aggregateBlockSegments(String gestureName)
         {
+            int blockSize = 3;
+            int aggregateTolerance = 30;
+            List<GestureSegment> aggregateBlock = new List<GestureSegment>();
+
+            foreach (GestureSegment segment in recordedSegments) {
+                aggregateBlock.Add(segment);
+
+                if (aggregateBlock.Count >= blockSize)
+                {
+                    //here if we drop anything from our aggregate block, we also drop it from the overall list
+
+                    //figure out the direction here, if direction has changed, definitely keep it
+                    //if direction is the same, then only keep if at least one of the angles varies
+                }
+
+            }
 
             m_currentNode.addSegments(recordedSegments, gestureName);
-
         }
 
         public void StopDetecting()

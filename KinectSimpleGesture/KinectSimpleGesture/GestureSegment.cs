@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 namespace KinectSimpleGesture {
+
     public class JointData {
         public enum Axis { x, y, z };
 
@@ -13,6 +14,7 @@ namespace KinectSimpleGesture {
 		double m_xDistance;
 
         const double DEFAULT_TOLERANCE = 10;
+        const double AGGREGATE_TOLERANCE = 30;
 
         double m_Xmin, m_Ymin;
         double m_Xmax, m_Ymax;
@@ -33,12 +35,13 @@ namespace KinectSimpleGesture {
 			m_xDistance = xDistance;
         }
 
-        public bool InRange(Axis axis, double angle, double minRange, double maxRange) {
-            int tolerance = 10;
+        public bool InRange(Axis axis, double angle, int tolerance = 10) 
+        {
             double maxAngle = Math.Abs(angle + tolerance) * ((angle < 0) ? -1 : 1);
             double minAngle = Math.Abs(angle - tolerance) * ((angle < 0)? -1 : 1);
 			// TODO: use xDistance somehow?
-            switch (axis) {
+            switch (axis) 
+            {
                 case Axis.x:
                     return (m_angleX - m_Xmin <= maxAngle && minAngle <= m_angleX + m_Xmax);
                 case Axis.y:
@@ -48,17 +51,19 @@ namespace KinectSimpleGesture {
             }
         }
 
-		public double PercentOverlap(Axis axis, double angle, double minRange, double maxRange) {
-			if (!InRange(axis, angle, minRange, maxRange)) {
+		public double PercentOverlap(Axis axis, double angle) 
+        {
+			if (!InRange(axis, angle))
 				return 0;
-			}
-                int tolerance = 15;
-				double maxAngle = angle + tolerance;
-				double minAngle = angle - tolerance;
-				double numLeft, numRight, denLeft, denRight;
+			
+            int tolerance = 15;
+			double maxAngle = angle + tolerance;
+			double minAngle = angle - tolerance;
+			double numLeft, numRight, denLeft, denRight;
 			// to find the intersection, choose the largest on the left and the smallest on the right.
 			// Denominator would be the sum of the segments
-			switch (axis) {
+			switch (axis) 
+            {
 				case Axis.x:
 					numLeft = m_angleX - m_Xmin <= minAngle ?  minAngle : m_angleX - m_Xmin;
 					numRight = maxAngle <= m_angleX + m_Xmax ?  maxAngle : m_angleX + m_Xmax;
@@ -79,13 +84,34 @@ namespace KinectSimpleGesture {
 
 		// May need to refine this.
 		// TODO: Return true if at least 50% overlap
-        public bool Overlap(JointData data) {
-            if (data.DaJoint != DaJoint) {
+        public bool Overlap(JointData data) 
+        {
+            if (data.DaJoint != DaJoint)
                 return false;
-            }
-			return (PercentOverlap(Axis.x, data.m_angleX, data.m_Xmin, data.m_Xmax) >= 50) &&
-				(PercentOverlap(Axis.y, data.m_angleY, data.m_Ymin, data.m_Ymax) >= 50);
+            
+			return (PercentOverlap(Axis.x, data.m_angleX) >= 50) &&
+				(PercentOverlap(Axis.y, data.m_angleY) >= 50);
         }
+
+        public bool InAggregate(JointData data)
+        {
+            if (data.DaJoint != DaJoint)
+                return false;
+
+            return (Math.Abs(m_angleX - data.m_angleX) <= AGGREGATE_TOLERANCE) &&
+                (Math.Abs(m_angleY - data.m_angleY) <= AGGREGATE_TOLERANCE);
+        }
+
+
+        public int calculateDirection(JointData data, Axis axis) 
+        {
+            if (data.DaJoint != DaJoint || axis == Axis.z)
+                return 0;
+
+            double diff = (axis == Axis.x) ? (m_angleX - data.m_angleX) : (m_angleY - data.m_angleY);
+            return (int)(diff / Math.Abs(diff));
+        }
+
     }
 
     public class GestureSegment {
@@ -152,8 +178,6 @@ namespace KinectSimpleGesture {
 
         // TODO possibility that the range will overlap!!!!!!
         // Have a method that calculates how close you are to the gesture
-
-
         public bool Match(object obj) {
             if (obj == null) {
                 return false;
