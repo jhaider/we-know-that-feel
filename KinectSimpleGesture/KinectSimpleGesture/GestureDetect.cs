@@ -492,11 +492,27 @@ namespace KinectSimpleGesture
         public void StopRecording(string gestureName)
         {
             Console.WriteLine("children b:" + m_currentNode.m_children.Count);
-           if (gestureName.Length > 0)
-                m_currentNode.addSegments(recordedSegments, gestureName);
+            if (gestureName.Length > 0)
+            {
+                aggregateSegments(gestureName);
+            }
            Console.WriteLine("children a:" + m_currentNode.m_children.Count);
 
             Reset();
+        }
+
+        private void aggregateSegments(String gestureName)
+        {
+
+            m_currentNode.addSegments(recordedSegments, gestureName);
+
+        }
+
+        private void aggregateBlockSegments(String gestureName)
+        {
+
+            m_currentNode.addSegments(recordedSegments, gestureName);
+
         }
 
         public void StopDetecting()

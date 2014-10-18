@@ -49,11 +49,9 @@
   <ItemGroup>
     <Compile Include="GestureSegment.cs" />
     <Compile Include="GestureTrie.cs" />
-    <Compile Include="WaveGesture.cs" />
     <Compile Include="GesturePartResult.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WaveGestureSegments.cs" />
     <Compile Include="GestureDetect.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

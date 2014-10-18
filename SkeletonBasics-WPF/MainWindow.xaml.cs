@@ -277,7 +277,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                             BodyCenterThickness,
                             BodyCenterThickness);
                             frameCount++;
-
+                            //tODO: does logic ever get here??
                             if (frameCount % 10 == 0)
                             {
                                 Console.Write("trying to generate from skeleton spot");
