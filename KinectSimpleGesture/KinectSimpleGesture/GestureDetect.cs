@@ -494,7 +494,7 @@ namespace KinectSimpleGesture
             Console.WriteLine("children b:" + m_currentNode.m_children.Count);
             if (gestureName.Length > 0)
             {
-                aggregateBlockSegments(gestureName);
+                aggregateSegments(gestureName);
             }
            Console.WriteLine("children a:" + m_currentNode.m_children.Count);
 
@@ -503,8 +503,6 @@ namespace KinectSimpleGesture
 
         private void aggregateSegments(String gestureName)
         {
-            int aggregateTolerance = 30;
-
             int xDirection = 0;
             int yDirection = 0;
             GestureSegment currentSegment = null;
@@ -539,6 +537,7 @@ namespace KinectSimpleGesture
                             currentSegment = segment;
                             xDirection = xDir;
                             yDirection = yDir;
+                            break;
                         }
                     }
 
@@ -551,28 +550,6 @@ namespace KinectSimpleGesture
            
             m_currentNode.addSegments(aggregatedSegments, gestureName);
 
-        }
-
-        private void aggregateBlockSegments(String gestureName)
-        {
-            int blockSize = 3;
-            int aggregateTolerance = 30;
-            List<GestureSegment> aggregateBlock = new List<GestureSegment>();
-
-            foreach (GestureSegment segment in recordedSegments) {
-                aggregateBlock.Add(segment);
-
-                if (aggregateBlock.Count >= blockSize)
-                {
-                    //here if we drop anything from our aggregate block, we also drop it from the overall list
-
-                    //figure out the direction here, if direction has changed, definitely keep it
-                    //if direction is the same, then only keep if at least one of the angles varies
-                }
-
-            }
-
-            m_currentNode.addSegments(recordedSegments, gestureName);
         }
 
         public void StopDetecting()
