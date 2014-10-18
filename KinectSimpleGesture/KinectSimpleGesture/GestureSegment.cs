@@ -8,15 +8,20 @@ namespace KinectSimpleGesture {
 
     public class JointData {
         public enum Axis { x, y, z };
+        public enum Direction { POS, NEG };
 
         JointType m_joint;
 		double m_angleY, m_angleX;
 		double m_xDistance;
 
         const double DEFAULT_TOLERANCE = 10;
+        const int AGGREGATE_TOLERANCE = 30;
 
         double m_Xmin, m_Ymin;
         double m_Xmax, m_Ymax;
+
+        Direction x_dir;
+        Direction y_dir;
 
         public JointType DaJoint {
             get { return m_joint; }
@@ -92,12 +97,24 @@ namespace KinectSimpleGesture {
 				(PercentOverlap(Axis.y, data.m_angleY) >= 50);
         }
 
-        public bool InAggregate(JointData data)
+        public bool InAggregateRange(JointData data)
         {
             if (data.DaJoint != DaJoint)
                 return false;
 
+            return InRange(Axis.x, data.m_angleX, AGGREGATE_TOLERANCE) &&
+                InRange(Axis.y, data.m_angleY, AGGREGATE_TOLERANCE);
+        }
 
+        public bool InSameDirection(JointData data, JointData prevData)
+        {
+            if (data.DaJoint != DaJoint)
+                return false;
+
+            x_dir = ((data.m_angleX - m_angleX) > 0) ? Direction.POS : Direction.NEG;
+            y_dir = ((data.m_angleY - m_angleY) > 0) ? Direction.POS : Direction.NEG;
+            
+            return (prevData.x_dir == x_dir && prevData.y_dir == y_dir);
         }
     }
 
@@ -188,6 +205,41 @@ namespace KinectSimpleGesture {
             return true;
         }
 
+        //returns true if the segment passed in and self belong in the same aggregate
+        public bool InAggregate(GestureSegment segment, GestureSegment prevSegment)
+        {
+            if (segment == null)
+            {
+                return false;
+            }
+
+            if (m_joints.Count != segment.m_joints.Count)
+            {
+                return false;
+            }
+
+            foreach (KeyValuePair<JointType, JointData> entry in m_joints)
+            {
+                JointData data; 
+                segment.m_joints.TryGetValue(entry.Key, out data);
+
+                JointData prevData;
+                prevSegment.m_joints.TryGetValue(entry.Key, out prevData);
+
+                //first we check to see if they are in the same direction, if not return false
+                if (!entry.Value.InSameDirection(data, prevData))
+                {
+                    return false;
+                }
+
+                //next we check to see if they are within the aggregate tolerance range
+                if (!entry.Value.InAggregateRange(data))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
    
     }
