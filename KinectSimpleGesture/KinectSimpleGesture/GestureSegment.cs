@@ -113,7 +113,10 @@ namespace KinectSimpleGesture {
 
             x_dir = ((data.m_angleX - m_angleX) > 0) ? Direction.POS : Direction.NEG;
             y_dir = ((data.m_angleY - m_angleY) > 0) ? Direction.POS : Direction.NEG;
-            
+
+            if (prevData == null)
+                return true;
+
             return (prevData.x_dir == x_dir && prevData.y_dir == y_dir);
         }
     }
@@ -223,13 +226,15 @@ namespace KinectSimpleGesture {
                 JointData data; 
                 segment.m_joints.TryGetValue(entry.Key, out data);
 
-                JointData prevData;
-                prevSegment.m_joints.TryGetValue(entry.Key, out prevData);
+                if (prevSegment != null) {
 
-                //first we check to see if they are in the same direction, if not return false
-                if (!entry.Value.InSameDirection(data, prevData))
-                {
-                    return false;
+                    JointData prevData;
+                    prevSegment.m_joints.TryGetValue(entry.Key, out prevData);
+
+                    //first we check to see if they are in the same direction, if not return false
+                    if (!entry.Value.InSameDirection(data, prevData)) {
+                        return false;
+                    }
                 }
 
                 //next we check to see if they are within the aggregate tolerance range
