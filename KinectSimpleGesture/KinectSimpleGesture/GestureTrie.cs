@@ -115,7 +115,7 @@ namespace KinectSimpleGesture
                 if (next == null)
                 {
                     next = root.addChild(segments[i]);
-                    Console.WriteLine("added trie " + next.id + " " + name + " to " + root.id);
+                   // Console.WriteLine("added trie " + next.id + " " + name + " to " + root.id);
                 }
                 root = next;
             }

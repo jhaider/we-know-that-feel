@@ -52,9 +52,10 @@ namespace KinectSimpleGesture {
             switch (axis) 
             {
                 case Axis.x:
-                    return (m_angleX - m_Xmin <= maxAngle && minAngle <= m_angleX + m_Xmax);
+                    Console.WriteLine(m_angleX + ", " + m_Xmin + ", " + maxAngle + ", ");
+                    return (m_angleX - tolerance <= maxAngle && minAngle <= m_angleX + tolerance);
                 case Axis.y:
-                    return (m_angleY - m_Ymin <= maxAngle && minAngle <= m_angleY + m_Ymax);
+                    return (m_angleY - tolerance <= maxAngle && minAngle <= m_angleY + tolerance);
                 default:
                     return false;
             }
@@ -107,6 +108,9 @@ namespace KinectSimpleGesture {
             if (data.DaJoint != DaJoint)
                 return false;
 
+            Console.WriteLine("Tol axis.x " + data.m_angleX + " vs " + m_angleX);
+            Console.WriteLine("Tol axis.y " + data.m_angleY + " vs " + m_angleY);
+
             return InRange(Axis.x, data.m_angleX, AGGREGATE_TOLERANCE) &&
                 InRange(Axis.y, data.m_angleY, AGGREGATE_TOLERANCE);
         }
@@ -119,9 +123,15 @@ namespace KinectSimpleGesture {
             x_dir = ((data.m_angleX - m_angleX) > 0) ? Direction.POS : Direction.NEG;
             y_dir = ((data.m_angleY - m_angleY) > 0) ? Direction.POS : Direction.NEG;
 
-            if (prevData == null)
-                return true;
+            Console.WriteLine("xDir " + x_dir + " y_dir " + y_dir);
 
+            if (prevData == null)
+            {
+                Console.WriteLine("prev Data was null");
+                return true;
+            }
+
+            Console.WriteLine("PREV: xDir " + prevData.x_dir + "y_dir " + prevData.y_dir);
             return (prevData.x_dir == x_dir && prevData.y_dir == y_dir);
         }
     }
@@ -231,20 +241,21 @@ namespace KinectSimpleGesture {
                 JointData data; 
                 segment.m_joints.TryGetValue(entry.Key, out data);
 
+                JointData prevData = null;
                 if (prevSegment != null) {
-
-                    JointData prevData;
                     prevSegment.m_joints.TryGetValue(entry.Key, out prevData);
-
-                    //first we check to see if they are in the same direction, if not return false
-                    if (!entry.Value.InSameDirection(data, prevData)) {
-                        return false;
-                    }
                 }
-
+ 
+                //first we check to see if they are in the same direction, if not return false
+                if (!entry.Value.InSameDirection(data, prevData)) {
+                    Console.WriteLine("not the same direction");
+                    return false;
+                }
+           
                 //next we check to see if they are within the aggregate tolerance range
                 if (!entry.Value.InAggregateRange(data))
                 {
+                    Console.WriteLine("outside the aggregation tolerance");
                     return false;
                 }
             }

@@ -280,7 +280,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                             //tODO: does logic ever get here??
                             if (frameCount % 10 == 0)
                             {
-                                Console.Write("trying to generate from skeleton spot");
+                                //Console.Write("trying to generate from skeleton spot");
                                 gesture.Update(skel, m_mode);
                                 frameCount = 0;
                                 DetectedGestureBlock.Text = gesture.GetGestureName();
@@ -301,7 +301,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
 
                         if (frameCount % 15 == 0)
                         {
-                            Console.WriteLine("trying to generate from here: " + Enum.GetName(typeof(Mode),m_mode));
+                            //Console.WriteLine("trying to generate from here: " + Enum.GetName(typeof(Mode),m_mode));
                             gesture.Update(user, m_mode);
                             frameCount = 0;
                             DetectedGestureBlock.Text = gesture.GetGestureName();
@@ -453,17 +453,17 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                     m_mode = Mode.IDLE;
                     string gestureName = "";
                     gestureName = Microsoft.VisualBasic.Interaction.InputBox("Enter name for gesture", "Gesture Name", "SE490 Rocks", -1, -1);
-                    Console.WriteLine("recorded: " + gestureName);
+                    //Console.WriteLine("recorded: " + gestureName);
                     gesture.StopRecording(gestureName);                   
                     DetectButton.IsEnabled = true;
                     RecordingBlock.Text = "";
                     RecordButton.Content = "Record";
                     break;
                 case Mode.DETECT:
-                    Console.WriteLine("should not happen: detect in record");
+                    //Console.WriteLine("should not happen: detect in record");
                     break;
                 default:
-                    Console.WriteLine("Whaaaaa: Record");
+                    //Console.WriteLine("Whaaaaa: Record");
                     break;
             }
         }

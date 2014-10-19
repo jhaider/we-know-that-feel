@@ -509,6 +509,7 @@ namespace KinectSimpleGesture
 
                 if (index == 0) 
                 {
+                    index++;
                     continue;
                 }
 
@@ -516,7 +517,12 @@ namespace KinectSimpleGesture
                 GestureSegment secPrevSegment = (index - 2) >= 0 ? recordedSegments[index - 2] : null; 
                 GestureSegment prevSegment = recordedSegments[index-1];
                 if (segment.InAggregate(prevSegment, secPrevSegment)) {
+                    Console.WriteLine("dropping segment");
                     recordedSegments.Remove(segment);
+                }
+                else
+                {
+                    Console.WriteLine("kept this segment");
                 }
 
                 index++;
