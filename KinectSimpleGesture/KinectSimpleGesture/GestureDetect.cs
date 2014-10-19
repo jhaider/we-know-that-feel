@@ -513,8 +513,8 @@ namespace KinectSimpleGesture
                 }
 
                 //compare with the previous segment, drop if its in the aggregate
-                GestureSegment secPrevSegment = (index - 1) >= 0 ? recordedSegments[index - 1] : null; 
-                GestureSegment prevSegment = recordedSegments[index];
+                GestureSegment secPrevSegment = (index - 2) >= 0 ? recordedSegments[index - 2] : null; 
+                GestureSegment prevSegment = recordedSegments[index-1];
                 if (segment.InAggregate(prevSegment, secPrevSegment)) {
                     recordedSegments.Remove(segment);
                 }
